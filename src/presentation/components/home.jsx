@@ -2,7 +2,7 @@ import { useRef, useState } from "react";
 import { styles } from "../style.js";
 import { Send } from 'lucide-react';
 
-import "../style.css";
+import "../stylecss.js";
 import { Message } from "../widgets/message.jsx";
 import Messages from "../../data/messages.js";
 import { Message as MessageData } from "../../data/message.js";
