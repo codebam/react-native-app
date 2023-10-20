@@ -47,17 +47,26 @@ export default () => {
 			})];
 			messages.add(..._messages);
 			setLocalMessages([...messages.all(), ..._messages]);
-			document.getElementById('chatbox').scrollTo({ top: 999999999999, behavior: 'instant' });
+			scrollToBottom();
 			setPaused(false);
 		})
 		.catch(e => setPaused(false));
 
-		document.getElementById('chatbox').scrollTo({ top: 999999999999, behavior: 'instant' });
+		scrollToBottom();
 
 		setTextInput('');
 		setPaused(true);
 		return true;
 	}
+
+	function scrollToBottom() {
+    const chatbox = document.getElementById('chatbox');
+    if (chatbox) {
+      chatbox.scrollTop = chatbox.scrollHeight*2;
+    }
+  };
+
+	window.onload = () => scrollToBottom();
 
 	return (
     <div style={styles.page}>
