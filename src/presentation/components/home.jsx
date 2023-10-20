@@ -8,6 +8,7 @@ import Messages from "../../data/messages.js";
 import { Message as MessageData } from "../../data/message.js";
 import { Text, View, TextInput, Button } from "react-native";
 import { getServerResponse } from "../../controllers/serverResponse.js";
+import { setLocalMessages } from "../../controllers/localdb.js";
 
 export default () => {
 	const [textInput, setTextInput] = useState("");
@@ -17,14 +18,14 @@ export default () => {
 	function sendMessage(){
 		if(!textInput.trim().length || paused) return false;
 
-		const allMessages = messages.all();
+		if(textInput.trim() == '/clear'){
+			messages.set([]);
+			setTextInput('');
+			setLocalMessages([]);
+			return false;
+		}
 
-		getServerResponse(textInput.trim(), allMessages)
-		.then(response => {
-			messages.setMessage(-1, { content: response, onload: false })
-			setPaused(false);
-		})
-		.catch(e => setPaused(false));
+		const allMessages = messages.all();
 
 		messages.add(new MessageData({
 			from: 'self',
@@ -35,7 +36,23 @@ export default () => {
 			onload: true
 		}));
 
-		
+		getServerResponse(textInput.trim(), allMessages)
+		.then(response => {
+			let _messages = [new MessageData({
+				from: 'self',
+				content: textInput.trim()
+			}), new MessageData({
+				from: 'server',
+				content: response
+			})];
+			messages.add(..._messages);
+			setLocalMessages([...messages.all(), ..._messages]);
+			document.getElementById('chatbox').scrollTo({ top: 999999999999, behavior: 'instant' });
+			setPaused(false);
+		})
+		.catch(e => setPaused(false));
+
+		document.getElementById('chatbox').scrollTo({ top: 999999999999, behavior: 'instant' });
 
 		setTextInput('');
 		setPaused(true);
@@ -44,7 +61,7 @@ export default () => {
 
 	return (
     <div style={styles.page}>
-			<div style={styles.chatbox}>
+			<div style={styles.chatbox} id="chatbox">
 
 				{/* Man, fuck that, i wanna use css */}
 

@@ -1,6 +1,7 @@
 import { useState } from "react";
 
 import { Message as MessageData } from "./message";
+import { getLocalMessages, setLocalMessages } from "../controllers/localdb";
 
 export default class Messages {
 	messages = {};
@@ -9,9 +10,13 @@ export default class Messages {
    * Create a new Messages instance.
    */
   constructor() {
-    const [messages, setMessages] = useState([]);
-    this.messages.set = setMessages;
+    const [messages, setMessages] = useState(getLocalMessages());
+    this.messages.set = (m) => {
+			setMessages(m);
+			setLocalMessages(messages);
+		};
     this.messages.all = messages;
+    this.messages.get = () => messages;
   }
 
   /**
@@ -29,7 +34,7 @@ export default class Messages {
    * @returns {MessageData[]} An array of all messages.
    */
   all() {
-    return this.messages.all;
+    return [...this.messages.all];
   }
 
   /**
@@ -50,8 +55,8 @@ export default class Messages {
    */
   setMessage(index, options) {
     let messages = [...this.messages.all];
-		if(index == -1) index = messages.length-1;
-    messages[index]._setValues(options);
+		if(index < 0) index = messages.length-1;
+    messages[index] = new MessageData({...messages[index], ...options});
     this.messages.set(messages);
     return this;
   }

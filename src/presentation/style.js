@@ -29,7 +29,8 @@ export const styles = StyleSheet.create({
 		border: 0,
 		height: '40px',
 		paddingLeft: '10px',
-		backgroundColor: 'transparent'
+		backgroundColor: 'transparent',
+		color: '#dddddd'
 	},
 	sendButton: {
 		width: 40,
