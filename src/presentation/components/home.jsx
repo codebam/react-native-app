@@ -7,6 +7,7 @@ import { Message } from "../widgets/message.jsx";
 import Messages from "../../data/messages.js";
 import { Message as MessageData } from "../../data/message.js";
 import { Text, View, TextInput, Button } from "react-native";
+import { getServerResponse } from "../../controllers/serverResponse.js";
 
 export default () => {
 	const [textInput, setTextInput] = useState("");
@@ -15,6 +16,16 @@ export default () => {
 
 	function sendMessage(){
 		if(!textInput.trim().length || paused) return false;
+
+		const allMessages = messages.all();
+
+		getServerResponse(textInput.trim(), allMessages)
+		.then(response => {
+			messages.setMessage(-1, { content: response, onload: false })
+			setPaused(false);
+		})
+		.catch(e => setPaused(false));
+
 		messages.add(new MessageData({
 			from: 'self',
 			content: textInput.trim()
@@ -23,6 +34,9 @@ export default () => {
 			content: '...',
 			onload: true
 		}));
+
+		
+
 		setTextInput('');
 		setPaused(true);
 		return true;

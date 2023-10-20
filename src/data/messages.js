@@ -50,6 +50,7 @@ export default class Messages {
    */
   setMessage(index, options) {
     let messages = [...this.messages.all];
+		if(index == -1) index = messages.length-1;
     messages[index]._setValues(options);
     this.messages.set(messages);
     return this;
