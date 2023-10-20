@@ -5,6 +5,7 @@ import { Send } from 'lucide-react';
 import "../style.css";
 import { Message } from "../widgets/message.jsx";
 import Messages from "../../data/messages.js";
+import { Message as MessageData } from "../../data/message.js";
 
 export default () => {
 	const [textInput, setTextInput] = useState("");
@@ -12,10 +13,11 @@ export default () => {
 
 	function sendMessage(){
 		if(!textInput.trim().length) return;
-		messages.add(new Message({
+		messages.add(new MessageData({
 			from: 'self',
 			content: textInput.trim()
 		}))
+		setTextInput('');
 	}
 
 	return (
@@ -25,14 +27,15 @@ export default () => {
 				{/* Man, fuck that, i wanna use css */}
 
 				{
-					messages.all().map(msg => (<Message sender={msg.from == 'server' ? 'S' : 'U'} message={msg.content} />))
+					messages.all().map(msg => (<Message sender={msg.from == 'server' ? 'S' : 'U'} message={msg.content} loading={msg.onload} />))
 				}	
 
 			</div>
 			<div style={styles.messagebar}>
 				<input 
 					value={textInput}
-					onChangeText={setTextInput}
+					onInput={(e) => setTextInput(e.target.value)}
+					onKeyUp={(e) => e.key == 'Enter' ? sendMessage() : ""}
 					style={styles.messageinput}
 					placeholder="Message"
 					/>

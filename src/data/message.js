@@ -1,11 +1,12 @@
 
 
-class Message {
+export class Message {
 
 	// self | server
 	from = "self";
 	content = "";
 	date = new Date();
+	onload = false;
 
 
 	/**
@@ -13,6 +14,7 @@ class Message {
 	 * @param {Object} args - Message arguments.
 	 * @param {string} args.from - The sender of the message (either "self" or "server").
 	 * @param {string} args.content - The content of the message.
+	 * @param {boolean} args.onload - The loading state.
 	 * @param {Date} args.date - The date the message was sent.
 	 */
 	constructor(args){
@@ -24,16 +26,19 @@ class Message {
 	 * @param {Object} args - Message arguments.
 	 * @param {string} [args.from] - The sender of the message (either "self" or "server").
 	 * @param {string} [args.content] - The content of the message.
+	 * @param {boolean} [args.onload] - The loading state.
 	 * @param {Date} [args.date] - The date the message was sent.
 	 */
 	_setValues({
 		from,
 		content,
-		date
+		date,
+		onload
 	} = {}){
 		if(from) this.from = from;
 		if(content) this.content = content;
 		if(date) this.date = date;
+		if(onload) this.onload = onload;
 		else this.date = new Date();
 	}
 

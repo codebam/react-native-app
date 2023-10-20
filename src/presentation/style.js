@@ -13,7 +13,8 @@ export const styles = StyleSheet.create({
 	chatbox: {
 		position: 'absolute',
 		width: '100%',
-		height: 'calc(100% - 60px)'
+		height: 'calc(100% - 40px)',
+		overflow: 'auto'
 	},
 	messagebar: {
 		position: 'absolute',
