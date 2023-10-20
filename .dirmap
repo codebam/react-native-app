@@ -1,9 +1,14 @@
 src/
+	controllers/
+		localdb.js
+		messages.js
 	data/
 		message.js
-	controllers/
 		messages.js
-		localdb.js
 	presentation/
 		components/
 			home.jsx
+		style.css
+		style.js
+		widgets/
+			message.jsx
