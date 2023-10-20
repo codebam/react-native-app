@@ -8,11 +8,24 @@ class Message {
 	date = new Date();
 
 
-	// add @param thingies here  for intellisense
+	/**
+	 * Create a new Message.
+	 * @param {Object} args - Message arguments.
+	 * @param {string} args.from - The sender of the message (either "self" or "server").
+	 * @param {string} args.content - The content of the message.
+	 * @param {Date} args.date - The date the message was sent.
+	 */
 	constructor(args){
 		this._setValues(args);
 	}
 
+	/**
+	 * Set the message properties from an object.
+	 * @param {Object} args - Message arguments.
+	 * @param {string} [args.from] - The sender of the message (either "self" or "server").
+	 * @param {string} [args.content] - The content of the message.
+	 * @param {Date} [args.date] - The date the message was sent.
+	 */
 	_setValues({
 		from,
 		content,
@@ -21,13 +34,22 @@ class Message {
 		if(from) this.from = from;
 		if(content) this.content = content;
 		if(date) this.date = date;
+		else this.date = new Date();
 	}
 
+	/**
+	 * Deserialize a JSON string and set the message properties.
+	 * @param {string} json - JSON string representing a message.
+	 */
 	fromJson(json){
 		let args = JSON.parse(json);
 		this._setValues(args);
 	}
 
+	/**
+	 * Serialize the message to a JSON string.
+	 * @returns {string} The JSON representation of the message.
+	 */
 	toJson(){
 		return JSON.stringify(this);
 	}
