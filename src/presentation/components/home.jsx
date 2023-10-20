@@ -12,12 +12,13 @@ export default () => {
 	const messages = new Messages();
 
 	function sendMessage(){
-		if(!textInput.trim().length) return;
+		if(!textInput.trim().length) return false;
 		messages.add(new MessageData({
 			from: 'self',
 			content: textInput.trim()
 		}))
 		setTextInput('');
+		return true;
 	}
 
 	return (
@@ -32,13 +33,13 @@ export default () => {
 
 			</div>
 			<div style={styles.messagebar}>
-				<input 
+				<textarea 
 					value={textInput}
 					onInput={(e) => setTextInput(e.target.value)}
-					onKeyUp={(e) => e.key == 'Enter' ? sendMessage() : ""}
+					onKeyUp={(e) => !e.shiftKey && e.key == 'Enter' ? (e.preventDefault(),sendMessage()) : ""}
 					style={styles.messageinput}
 					placeholder="Message"
-					/>
+				></textarea>
 				<button style={styles.sendButton} onClick={() => sendMessage()}><Send /></button>
 			</div>
 		</div>
