@@ -1,0 +1,9 @@
+src/
+	data/
+		message.js
+	controllers/
+		messages.js
+		localdb.js
+	presentation/
+		components/
+			home.jsx
