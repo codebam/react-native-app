@@ -37,8 +37,8 @@ export default class Messages {
    * @param {MessageData} message - The message to add.
    * @returns {Messages} The updated Messages instance.
    */
-  add(message) {
-    this.messages.set([...this.messages.all, message]);
+  add(...messages) {
+    this.messages.set([...this.messages.all, ...messages]);
     return this;
   }
 

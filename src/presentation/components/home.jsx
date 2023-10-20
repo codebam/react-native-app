@@ -6,18 +6,25 @@ import "../style.css";
 import { Message } from "../widgets/message.jsx";
 import Messages from "../../data/messages.js";
 import { Message as MessageData } from "../../data/message.js";
+import { Text, View, TextInput, Button } from "react-native";
 
 export default () => {
 	const [textInput, setTextInput] = useState("");
+	const [paused, setPaused] = useState(false);
 	const messages = new Messages();
 
 	function sendMessage(){
-		if(!textInput.trim().length) return false;
+		if(!textInput.trim().length || paused) return false;
 		messages.add(new MessageData({
 			from: 'self',
 			content: textInput.trim()
-		}))
+		}), new MessageData({
+			from: 'server',
+			content: '...',
+			onload: true
+		}));
 		setTextInput('');
+		setPaused(true);
 		return true;
 	}
 
@@ -33,13 +40,15 @@ export default () => {
 
 			</div>
 			<div style={styles.messagebar}>
-				<textarea 
+				<TextInput 
+					aria-disabled={paused}
 					value={textInput}
-					onInput={(e) => setTextInput(e.target.value)}
-					onKeyUp={(e) => !e.shiftKey && e.key == 'Enter' ? (e.preventDefault(),sendMessage()) : ""}
+					onChangeText={setTextInput}
+					// onInput={(e) => setTextInput(e.target.value)
+					onKeyPress={(e) => !e.shiftKey && e.key == 'Enter' ? (e.preventDefault(),sendMessage()) : ""}
 					style={styles.messageinput}
 					placeholder="Message"
-				></textarea>
+				></TextInput>
 				<button style={styles.sendButton} onClick={() => sendMessage()}><Send /></button>
 			</div>
 		</div>
